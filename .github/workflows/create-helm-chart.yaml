@@ -1,4 +1,4 @@
-name: Push Helm Chart to GHR
+name: Create Helm chart
 
 on:
   # push:
