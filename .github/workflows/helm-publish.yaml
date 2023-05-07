@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  ARGO_SERVER: ${{ env.ARGO_SERVER }}
+  ARGO_SERVER: ${{ env.ARGO_SERVER }} # Set these variables on Settings -> Secrets & variables -> actions
   CHARTMUSEUM_SERVER: ${{ env.CHARTMUSEUM_SERVER }}
   CHART_ROOT_FOLDER: charts
 
