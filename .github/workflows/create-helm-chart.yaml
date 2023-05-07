@@ -1,0 +1,49 @@
+name: Push Helm Chart to GHR
+
+on:
+  # push:
+  #   branches: [main]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  CHART_ROOT_FOLDER: charts
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set ENV variables
+        run: |
+          REPO_NAME=${GITHUB_REPOSITORY#*/}
+          CHART_APP_FOLDER="${CHART_ROOT_FOLDER}/${REPO_NAME}"
+          echo "REPO_NAME=${REPO_NAME}" >> "$GITHUB_ENV"
+          echo "CHART_APP_FOLDER=${CHART_APP_FOLDER}" >> "$GITHUB_ENV"
+
+      - uses: azure/setup-helm@v3
+        with:
+          version: 'v3.11.3' # default is latest (stable)
+          token: ${{ secrets.GITHUB_TOKEN }} # only needed if version is 'latest'
+      
+      - name: Create chart 
+        run: |
+          mkdir charts && helm create ${CCHART_APP_FOLDER}
+          sed -i '/0.1.0/ s//0.0.1/g' ${CHART_APP_FOLDER}/Chart.yaml
+          sed -i '/1.16.0/ s//0.0.1/g' ${CHART_APP_FOLDER}/Chart.yaml
+      
+      - name: Commit changes
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Github actions - Chart creation"
+          git push
+
