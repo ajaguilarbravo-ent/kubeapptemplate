@@ -35,7 +35,7 @@ jobs:
       
       - name: Create chart 
         run: |
-          mkdir charts && helm create ${CCHART_APP_FOLDER}
+          mkdir charts && helm create ${CHART_APP_FOLDER}
           sed -i '/0.1.0/ s//0.0.1/g' ${CHART_APP_FOLDER}/Chart.yaml
           sed -i '/1.16.0/ s//0.0.1/g' ${CHART_APP_FOLDER}/Chart.yaml
       
