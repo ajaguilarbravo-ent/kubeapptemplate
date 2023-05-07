@@ -8,12 +8,7 @@ name: Push Docker Image to GHR
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    inputs:
-      docker_tag:
-        description: 'Docker tag'
-        required: true
-        default: 'latest' 
-        type: string
+
 
 
 env:
@@ -35,9 +30,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set ENV variables
+        run: |
+          REPO_NAME=${GITHUB_REPOSITORY#*/}
+          CHART_APP_FOLDER="${CHART_ROOT_FOLDER}/${REPO_NAME}"
+          echo "REPO_NAME=${REPO_NAME}" >> "$GITHUB_ENV"
+          echo "CHART_APP_FOLDER=${CHART_APP_FOLDER}" >> "$GITHUB_ENV"
+
+      - name: Set Application version 
+        run: |
+          OUTPUT=$(grep ^appVersion $CHART_APP_FOLDER/Chart.yaml | awk '{ print $2 }' | tr -d '"')
+          echo "APP_VERSION=$OUTPUT" >> "$GITHUB_ENV"
+
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -53,6 +60,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ inputs.docker_tag }}
+          tags: ghcr.io/${{ github.repository }}:${APP_VERSION}
 
 
