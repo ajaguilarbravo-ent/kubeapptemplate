@@ -1,4 +1,4 @@
-module local/backend
+module local/app
 
 go 1.20
 
