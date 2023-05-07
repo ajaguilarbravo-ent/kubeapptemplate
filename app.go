@@ -19,10 +19,6 @@ func main() {
 		return c.HTML(http.StatusOK, "Hello, Gophers!!! <3")
 	})
 
-	e.GET("/betis", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, "<p style='text-align:center;'><a href='https://www.realbetisbalompie.es' target='_blank'><img src='https://upload.wikimedia.org/wikipedia/en/thumb/1/13/Real_betis_logo.svg/1024px-Real_betis_logo.svg.png'></a></p>")
-	})
-
 	e.GET("/health", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
 	})
