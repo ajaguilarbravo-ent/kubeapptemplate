@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 env:
-  ARGO_SERVER: argocd.20.103.115.121.nip.io
-  CHARTMUSEUM_SERVER: https://chart.20.103.115.121.nip.io
+  ARGO_SERVER: ${{ env.ARGO_SERVER }}
+  CHARTMUSEUM_SERVER: ${{ env.CHARTMUSEUM_SERVER }}
   CHART_ROOT_FOLDER: charts
 
 jobs:
