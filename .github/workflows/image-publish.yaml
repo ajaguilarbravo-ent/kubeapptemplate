@@ -17,8 +17,8 @@ env:
   CHART_ROOT_FOLDER: charts
 
 jobs:
-  build-push:
 
+  build-push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
